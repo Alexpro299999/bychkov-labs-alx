@@ -1,0 +1,131 @@
+﻿<Window x:Class="RealEstateAgency.EF.WPF.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Агентство Недвижимости (EF Core)" Height="650" Width="1000" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TabControl Margin="5">
+            <TabItem Header="Сотрудники">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,5">
+                        <TextBlock Text="Поиск (ФИО):" VerticalAlignment="Center" Margin="5"/>
+                        <TextBox Name="TxtSearchEmp" Width="200" Margin="5" TextChanged="TxtSearchEmp_TextChanged"/>
+                        <Button Content="Сброс" Margin="5" Width="80" Click="BtnResetEmp_Click"/>
+                        <Button Content="Отчет Word" Margin="20,5,5,5" Click="BtnReportAllEmps_Click"/>
+                    </StackPanel>
+
+                    <DataGrid Name="GridEmployees" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" Width="200"/>
+                            <DataGridTextColumn Header="Должность" Binding="{Binding Position}" Width="150"/>
+                            <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" Width="*"/>
+                            <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" Width="120"/>
+                            <DataGridTextColumn Header="Образование" Binding="{Binding Education}" Width="120"/>
+                            <DataGridTextColumn Header="Специальность" Binding="{Binding Specialty}" Width="120"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                        <Button Content="Добавить" Width="100" Margin="5" Click="BtnAddEmp_Click"/>
+                        <Button Content="Изменить" Width="100" Margin="5" Click="BtnEditEmp_Click"/>
+                        <Button Content="Удалить" Width="100" Margin="5" Click="BtnDelEmp_Click"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Услуги">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <DataGrid Name="GridServices" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Стоимость" Binding="{Binding Cost, StringFormat=C2}" Width="150"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                        <Button Content="Добавить" Width="100" Margin="5" Click="BtnAddService_Click"/>
+                        <Button Content="Изменить" Width="100" Margin="5" Click="BtnEditService_Click"/>
+                        <Button Content="Удалить" Width="100" Margin="5" Click="BtnDelService_Click"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Договора">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,5">
+                        <Button Content="Сортировать по дате" Width="150" Click="BtnSortContracts_Click"/>
+                    </StackPanel>
+
+                    <DataGrid Name="GridContracts" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="Номер" Binding="{Binding ContractNumber}" Width="80"/>
+                            <DataGridTextColumn Header="Дата" Binding="{Binding ContractDate, StringFormat=dd.MM.yyyy}" Width="100"/>
+                            <DataGridTextColumn Header="Клиент" Binding="{Binding ClientName}" Width="150"/>
+                            <DataGridTextColumn Header="Сотрудник" Binding="{Binding Employee.FullName}" Width="150"/>
+                            <DataGridTextColumn Header="Услуга" Binding="{Binding Service.Name}" Width="150"/>
+                            <DataGridTextColumn Header="Цена" Binding="{Binding Service.Cost, StringFormat=C2}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                        <Button Content="Добавить" Width="100" Margin="5" Click="BtnAddContract_Click"/>
+                        <Button Content="Изменить" Width="100" Margin="5" Click="BtnEditContract_Click"/>
+                        <Button Content="Удалить" Width="100" Margin="5" Click="BtnDelContract_Click"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Запросы">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                        <TextBlock Text="Выберите запрос:" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <ComboBox Name="CmbQueries" SelectionChanged="CmbQueries_SelectionChanged">
+                            <ComboBoxItem Content="1. Сотрудники с высшим образованием"/>
+                            <ComboBoxItem Content="2. Популярные услуги (>2 заказов)"/>
+                            <ComboBoxItem Content="3. Договора конкретного сотрудника"/>
+                            <ComboBoxItem Content="4. Эффективность (кол-во и прибыль)"/>
+                            <ComboBoxItem Content="5. Группировка услуг по датам"/>
+                        </ComboBox>
+
+                        <StackPanel Name="PanelQueryParams" Visibility="Collapsed" Margin="0,15,0,0">
+                            <TextBlock Text="Выберите сотрудника:" Margin="0,0,0,5"/>
+                            <ComboBox Name="CmbQueryEmployee" DisplayMemberPath="FullName" SelectedValuePath="Id"/>
+                        </StackPanel>
+
+                        <Button Content="Выполнить" Height="35" Margin="0,20,0,0" Click="BtnExecuteQuery_Click"/>
+                        <Button Content="Экспорт в Word" Height="35" Margin="0,10,0,0" Click="BtnExportQuery_Click"/>
+                    </StackPanel>
+
+                    <GroupBox Grid.Column="1" Header="Результат выборки">
+                        <DataGrid Name="GridQueryResults" AutoGenerateColumns="True" IsReadOnly="True" CanUserAddRows="False"/>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
