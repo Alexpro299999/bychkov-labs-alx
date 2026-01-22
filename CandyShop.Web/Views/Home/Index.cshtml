@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Candy>
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-12">
+            <h2 class="text-primary">Каталог сладостей</h2>
+        </div>
+    </div>
+
+    <form asp-action="Index" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Поиск: <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" />
+                <input type="submit" value="Найти" class="btn btn-primary" /> |
+                <a asp-action="Index">Сбросить</a>
+            </p>
+        </div>
+    </form>
+
+    <div>
+        Сортировка:
+        <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-searchString="@ViewData["CurrentFilter"]">По имени</a> |
+        <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-searchString="@ViewData["CurrentFilter"]">По цене</a>
+    </div>
+    <br />
+
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-lg-3 col-md-6">
+                <div class="row p-2">
+                    <div class="col-12 p-1" style="border:1px solid #008cba; border-radius: 5px;">
+                        <div class="card">
+                            <img src="@product.ImageUrl" class="card-img-top rounded" style="height: 200px; object-fit: cover;" />
+                            <div class="card-body">
+                                <div class="pl-1">
+                                    <p class="card-title h5 text-primary">@product.Name</p>
+                                    <p class="card-title text-info">by <b>@product.Brand.Name</b></p>
+                                </div>
+                                <div class="pl-1">
+                                    <p>Цена: <b>@product.Price.ToString("c")</b></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <a asp-action="Details" class="btn btn-primary form-control" asp-route-productId="@product.Id">
+                                Детали
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

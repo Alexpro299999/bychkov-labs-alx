@@ -1,0 +1,178 @@
+﻿@model CandyShop.Web.Models.OrderVM
+@using CandyShop.Web.Utility
+
+<form method="post">
+    <input asp-for="Order.Id" hidden />
+    <br />
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-dark text-light ml-0">
+                <div class="container row">
+                    <div class="col-12 d-none d-md-block col-md-6 pb-1">
+                        <i class="fas fa-shopping-cart"></i> &nbsp; Детали заказа
+                    </div>
+                    <div class="col-12 col-md-4 offset-md-2 text-right">
+                        <a asp-action="Index" class="btn btn-outline-info form-control btn-sm">Назад к заказам</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container rounded p-2">
+                    <div class="row">
+                        <div class="col-12 col-lg-6 pb-4">
+                            <div class="row">
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-primary">Информация о получателе:</span>
+                                </h4>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">Имя</div>
+                                <div class="col-9">
+                                    <input asp-for="Order.Name" type="text" class="form-control" />
+                                    <span asp-validation-for="Order.Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">Телефон</div>
+                                <div class="col-9">
+                                    <input asp-for="Order.PhoneNumber" type="text" class="form-control" />
+                                    <span asp-validation-for="Order.PhoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">Адрес</div>
+                                <div class="col-9">
+                                    <input asp-for="Order.StreetAddress" type="text" class="form-control" />
+                                    <span asp-validation-for="Order.StreetAddress" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">Город</div>
+                                <div class="col-9">
+                                    <input asp-for="Order.City" type="text" class="form-control" />
+                                    <span asp-validation-for="Order.City" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">Область</div>
+                                <div class="col-9">
+                                    <input asp-for="Order.State" type="text" class="form-control" />
+                                    <span asp-validation-for="Order.State" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">Индекс</div>
+                                <div class="col-9">
+                                    <input asp-for="Order.PostalCode" type="text" class="form-control" />
+                                    <span asp-validation-for="Order.PostalCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">Email</div>
+                                <div class="col-9">
+                                    <input asp-for="Order.ApplicationUser.Email" readonly type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">Дата заказа</div>
+                                <div class="col-9">
+                                    <input value="@Model.Order.OrderDate.ToShortDateString()" readonly type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">Перевозчик</div>
+                                <div class="col-9">
+                                    <input asp-for="Order.Carrier" id="carrier" type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">Трек-номер</div>
+                                <div class="col-9">
+                                    <input asp-for="Order.TrackingNumber" id="trackingNumber" type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">Дата отправки</div>
+                                <div class="col-9">
+                                    <input value="@Model.Order.ShippingDate.ToShortDateString()" readonly type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <input type="submit" asp-action="UpdateOrderDetail" class="btn btn-warning form-control my-1" value="Обновить детали заказа" />
+                        </div>
+                        <div class="col-12 col-lg-5 offset-lg-1">
+                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-primary">Состав заказа</span>
+                            </h4>
+                            <label class="btn btn-outline-primary form-control my-2">Статус заказа - @Model.Order.OrderStatus</label>
+                            <ul class="list-group mb-3">
+                                @foreach (var detail in Model.OrderDetail)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between p-2">
+                                        <div class="row container">
+                                            <div class="col-8">
+                                                <h6 class="my-0 text-primary">@detail.Candy.Name</h6>
+                                                <small class="text-muted">Цена: @detail.Price</small><br />
+                                                <small class="text-muted">Количество: @detail.Count</small>
+                                            </div>
+                                            <div class="col-4 text-end">
+                                                <p class="text-success">@((detail.Count * detail.Price).ToString("c"))</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                                <li class="list-group-item bg-info">
+                                    <div class="row container">
+                                        <div class="col-6">
+                                            <h5 class="text-white">ИТОГО </h5>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <h5 class="text-white">@Model.Order.OrderTotal.ToString("c")</h5>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            @if (Model.Order.OrderStatus == "Approved")
+                            {
+                                <input type="submit" asp-action="StartProcessing" class="btn btn-primary form-control my-1" value="Начать обработку" />
+                            }
+                            @if (Model.Order.OrderStatus == "В обработке")
+                            {
+                                <input type="submit" onclick="return validateShippingInput()" asp-action="ShipOrder" class="btn btn-primary form-control my-1" value="Отправить заказ" />
+                            }
+                            @if (Model.Order.OrderStatus != "Возврат" && Model.Order.OrderStatus != "Отменен" && Model.Order.OrderStatus != "Отправлен")
+                            {
+                                <input type="submit" asp-action="CancelOrder" class="btn btn-danger form-control my-1" value="Отменить заказ" />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function validateShippingInput(){
+            if(document.getElementById("trackingNumber").value==""){
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Ошибка',
+                  text: 'Введите трек-номер!',
+                });
+                return false;
+            }
+            if(document.getElementById("carrier").value==""){
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Ошибка',
+                  text: 'Введите перевозчика!',
+                });
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
